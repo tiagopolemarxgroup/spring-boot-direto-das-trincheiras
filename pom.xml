@@ -6,6 +6,6 @@
     <artifactId>spring-boot-direto-das-trincheiras</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>anime service</module>
+        <module>anime-service</module>
     </modules>
 </project>
