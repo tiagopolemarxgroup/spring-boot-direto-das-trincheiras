@@ -1,9 +1,7 @@
 package academy.devdojo.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import academy.devdojo.model.Anime;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -12,20 +10,35 @@ import java.util.List;
 public class HeroController {
     private static final List<String> HEROES = List.of("Guts", "Zoro", "Kakashi", "Goku");
 
+    Anime anime = new Anime();
+
     @GetMapping
     public List<String> getHeroes() {
         return HEROES;
     }
 
     @GetMapping("filter")
-    public List<String> getHeroesFilter(@RequestParam(defaultValue = "") String name) {
-        return HEROES.stream().filter(hero -> hero.equalsIgnoreCase(name)).toList();
+    public List<Anime> getHeroesFilter(@RequestParam(defaultValue = "") String name) {
+        return Anime.getAnimes();
     }
 
     @GetMapping("list")
     public List<String> getHeroesFilterList(@RequestParam List<String> names) {
         return HEROES.stream().filter(names::contains).toList();
     }
+
+    @GetMapping("{name}")
+    public String getHeroesFilterByName(@PathVariable String name) {
+        return HEROES.stream()
+                .filter(hero -> hero.equalsIgnoreCase(name))
+                .findFirst().orElse("");
+    }
+
+//    @GetMapping("/{id}")
+//    public Anime findById(@PathVariable Long id) {
+//        HEROES.stream().filter(x -> x.equalsIgnoreCase(id)).findFirst();
+//        return
+//    }
 
 }
 

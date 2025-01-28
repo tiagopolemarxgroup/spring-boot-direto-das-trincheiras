@@ -1,12 +1,16 @@
 package academy.devdojo.model;
 import lombok.Data;
 
+import java.util.List;
+
 
 @Data
 
 public class Anime {
     private Long id;
     private String name;
+
+    public Anime() {}
 
     public Anime(Long id, String name) {
         this.id = id;
@@ -27,5 +31,12 @@ public class Anime {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public static List<Anime> getAnimes(){
+        var pok = new Anime(1L, "Pokemon");
+        var kaiju = new Anime(1L, "kaiju");
+        var digi = new Anime(1L, "kaiju");
+        return List.of(pok, kaiju, digi);
     }
 }
