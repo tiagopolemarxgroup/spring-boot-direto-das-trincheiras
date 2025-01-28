@@ -1,49 +1,45 @@
 package academy.devdojo.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+@Builder
 @Getter
+@Setter
 public class Producer {
     private Long id;
     @JsonProperty("full_name")
     private String name;
+    private LocalDateTime createdAt;
     private static List<Producer> producers = new ArrayList<Producer>();
 
     static {
-        var mappa = new Producer(1L, "Mappa");
-        var kyotoAnimation = new Producer(1L, "kyoto Animation");
-        var madhouse = new Producer(1L, "Madhouse");
+        var mappa = Producer.builder().id(1L).name("Mappa").createdAt(LocalDateTime.now()).build();
+        var kyotoAnimation = Producer.builder().id(2L).name("kyoto Animation").createdAt(LocalDateTime.now()).build();
+        var madhouse = Producer.builder().id(3L).name("Madhouse").createdAt(LocalDateTime.now()).build();
         producers.addAll(List.of(mappa, kyotoAnimation, madhouse));
     }
 
-    public Producer() {}
+    public Producer() {
+    }
 
-    public Producer(Long id, String name) {
+    public Producer(Long id, String name, LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        this.createdAt = createdAt;
     }
 
     public static List<Producer> getProducers() {
         return producers;
     }
+
+        public String toString() {
+            return "Producer.ProducerBuilder(id=" + this.id + ", name=" + this.name + ", createdAt=" + this.createdAt + ")";
+        }
+
 }

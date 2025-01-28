@@ -1,6 +1,8 @@
 package academy.devdojo.controllers;
 
 import academy.devdojo.model.Producer;
+import academy.devdojo.request.ProducerPostRequest;
+import academy.devdojo.response.ProducerGetResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -9,8 +11,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static com.fasterxml.jackson.databind.util.ClassUtil.name;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -19,11 +24,16 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ProducerController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, headers = "x-api-key=123")
-    public ResponseEntity<Producer> create(@RequestBody Producer anime, @RequestHeader HttpHeaders headers) {
+    public ResponseEntity<ProducerGetResponse> create(@RequestBody ProducerPostRequest request, @RequestHeader HttpHeaders headers) {
         log.info("{}", headers);
-        anime.setId(ThreadLocalRandom.current().nextLong(100_000));
-        Producer.getProducers().add(anime);
-        return ResponseEntity.status(HttpStatus.CREATED).body(anime);
+        var producer = Producer.builder().id(ThreadLocalRandom.current().nextLong(100_000)).name(request.getName()).createdAt(LocalDateTime.now()).build();
+        Producer.getProducers().add(producer);
+
+        var res = ProducerGetResponse.builder().id(ThreadLocalRandom.current().nextLong(100_000))
+                .name(request.getName())
+                .createdAt(LocalDateTime.now()).build();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(res);
 
     }
 
