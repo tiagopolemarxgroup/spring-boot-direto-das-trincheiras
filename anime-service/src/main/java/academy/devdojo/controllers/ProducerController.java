@@ -18,7 +18,6 @@ import java.util.concurrent.ThreadLocalRandom;
 @RequestMapping(value = "/v1/producers")
 public class ProducerController {
 
-
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, headers = "x-api-key=123")
     public ResponseEntity<Producer> create(@RequestBody Producer anime, @RequestHeader HttpHeaders headers) {
         log.info("{}", headers);
@@ -29,21 +28,20 @@ public class ProducerController {
     }
 
     @GetMapping
-    public List<Producer> listAll(@RequestParam(required = false) String name){
+    public ResponseEntity<List<Producer>> listAll(@RequestParam(required = false) String name){
         var producers = Producer.getProducers();
-        if (name == null) return producers;
-
-       return producers.stream().filter(producer -> producer.getName().equalsIgnoreCase(name)).findFirst().stream().toList();
-
+        if (name == null) return ResponseEntity.ok(producers);
+        var res = producers.stream().filter(producer -> producer.getName().equalsIgnoreCase(name)).findFirst().stream().toList();
+        return ResponseEntity.ok(res);
     }
 
     @GetMapping("/{id}")
-    public Producer findById(@PathVariable Long id){
+    public ResponseEntity<Producer> findById(@PathVariable Long id){
         Producer producerById = Producer.getProducers()
                 .stream()
                 .filter(producer -> producer.getId().equals(id))
                 .findFirst().orElse(null);
-        return producerById;
+        return ResponseEntity.ok(producerById);
     }
 }
 
