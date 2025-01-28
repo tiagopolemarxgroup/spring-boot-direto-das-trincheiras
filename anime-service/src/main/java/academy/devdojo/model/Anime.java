@@ -1,14 +1,22 @@
 package academy.devdojo.model;
-import lombok.Data;
 
+import lombok.Getter;
+
+import java.util.ArrayList;
 import java.util.List;
 
-
-@Data
-
+@Getter
 public class Anime {
     private Long id;
     private String name;
+    private static List<Anime> animes = new ArrayList<Anime>();
+
+    static {
+        var pok = new Anime(1L, "Pokemon");
+        var kaiju = new Anime(1L, "kaiju");
+        var digi = new Anime(1L, "kaiju");
+        animes.addAll(List.of(pok, kaiju, digi));
+    }
 
     public Anime() {}
 
@@ -33,10 +41,7 @@ public class Anime {
         this.name = name;
     }
 
-    public static List<Anime> getAnimes(){
-        var pok = new Anime(1L, "Pokemon");
-        var kaiju = new Anime(1L, "kaiju");
-        var digi = new Anime(1L, "kaiju");
-        return List.of(pok, kaiju, digi);
+    public static List<Anime> getAnimes() {
+        return animes;
     }
 }
